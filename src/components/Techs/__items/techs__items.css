@@ -1,0 +1,27 @@
+.techs__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 686px) {
+  .techs__items {
+    margin: 0 auto;
+    max-width: 366px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .techs__items {
+    margin: 0 auto;
+    max-width: 178px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}

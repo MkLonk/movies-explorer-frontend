@@ -1,0 +1,20 @@
+.navigation__close {
+  display: none;
+  z-index: 2;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__close {
+    display: block;
+    height: 22px;
+    width: 22px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    background-image: url(../../../images/button__nav-close.svg);
+    background-position: center;
+    position: absolute;
+    top: 22px;
+    right: 22px;
+  }
+}

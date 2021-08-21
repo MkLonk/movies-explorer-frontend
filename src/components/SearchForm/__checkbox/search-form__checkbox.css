@@ -1,0 +1,21 @@
+.search-form__checkbox {
+  display: none;
+}
+
+.search-form__checkbox+label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+.search-form__checkbox+label::before {
+  content: '';
+  width: 36px;
+  height: 20px;
+  margin-right: 12px;
+  background-image: url('../../../images/search-checkbox_inactive.svg');
+}
+
+.search-form__checkbox:checked+label::before {
+  background-image: url('../../../images/search-checkbox_active.svg');
+}

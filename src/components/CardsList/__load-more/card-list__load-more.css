@@ -1,0 +1,19 @@
+.card-list__load-more {
+  width: 320px;
+  height: 36px;
+  margin: 34px calc((100% - 320px)/2) 80px;
+  padding: 0;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: #fff;
+  background-image: url(../../../images/button__load-more.svg);
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.card-list__load-more:hover {
+  opacity: 0.7;
+  padding: 0;
+}

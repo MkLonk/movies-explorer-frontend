@@ -1,0 +1,36 @@
+.about__photo-column {
+  min-height: 360px;
+  min-width: 270px;
+  border-radius: 10px;
+  background-color: seagreen;
+  background-image: url(../../../images/about-photo.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+@media screen and (max-width: 828px) {
+  .about__photo-column {
+    min-width: 255px;
+    min-height: 307px;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  .about__photo-column {
+    grid-row: 1/2;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    min-width: 292px;
+    min-height: 352px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .about__photo-column {
+    grid-row: 1/2;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    max-width: 292px;
+    max-height: 352px;
+  }
+}

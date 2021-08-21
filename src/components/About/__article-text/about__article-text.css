@@ -1,0 +1,21 @@
+.about__article-text {
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: justify;
+}
+
+@media screen and (max-width: 868px) {
+  .about__article-text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  .about__article-text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+}

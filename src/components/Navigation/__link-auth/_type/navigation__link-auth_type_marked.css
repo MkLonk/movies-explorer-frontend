@@ -1,0 +1,11 @@
+.navigation__link-auth_type_marked {
+  padding: 8px 20px;
+  background-color: #2BE080;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 440px) {
+  .navigation__link-auth_type_marked {
+    padding: 5px 12px;
+  }
+}

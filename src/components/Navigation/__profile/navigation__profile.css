@@ -1,0 +1,17 @@
+.navigation__profile {
+  height: 30px;
+  width: 100px;
+  margin-left: 30px;
+  background-color: #fff;
+  background-image: url(../../../images/profile-icon.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__profile {
+    position: absolute;
+    bottom: 92px;
+    right: calc(50% - 50px);
+  }
+}

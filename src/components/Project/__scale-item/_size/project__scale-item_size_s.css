@@ -1,0 +1,16 @@
+.project__scale-item_size_s {
+  width: 20%;
+}
+
+
+@media screen and (max-width: 868px) {
+  .project__scale-item_size_s {
+    width: 22%;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .project__scale-item_size_s {
+    width: 35%;
+  }
+}

@@ -1,0 +1,22 @@
+.about__article-title {
+  margin: 0 0 18px;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+}
+
+@media screen and (max-width: 868px) {
+  .about__article-title {
+    margin-bottom: 16px;
+    font-size: 40px;
+    line-height: 40px;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  .about__article-title {
+    margin-bottom: 20px;
+    font-size: 30px;
+    line-height: 36px;
+  }
+}

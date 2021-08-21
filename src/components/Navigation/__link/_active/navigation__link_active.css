@@ -1,0 +1,11 @@
+.navigation__link_active {
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__link_active {
+    margin-bottom: 22px;
+    padding-bottom: 4px;
+    border-bottom: 2px #000 solid;
+  }
+}

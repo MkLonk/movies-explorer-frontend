@@ -1,0 +1,30 @@
+.project__scale {
+  margin: 0 70px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+@media screen and (max-width: 868px) and (min-width: 829px) {
+  .project__scale {
+    margin: 0 calc((100vw - 728px) /2) 70px;
+  }
+}
+
+@media screen and (max-width: 828px) {
+  .project__scale {
+    margin: 0 50px;
+  }
+}
+
+@media screen and (max-width: 760px) and (min-width: 697px) {
+  .project__scale {
+    margin: 0 calc((100vw - 660px) /2);
+  }
+}
+
+@media screen and (max-width: 696px) {
+  .project__scale {
+    margin: 0 18px;
+  }
+}

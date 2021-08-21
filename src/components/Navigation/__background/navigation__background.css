@@ -1,0 +1,10 @@
+@media screen and (max-width: 768px) {
+  .navigation__background {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+}

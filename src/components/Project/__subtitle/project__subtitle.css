@@ -1,0 +1,21 @@
+.project__subtitle {
+  margin: 0 0 26px;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+}
+
+@media screen and (max-width: 868px) {
+  .project__subtitle {
+    margin-bottom: 22px;
+  }
+}
+
+@media screen and (max-width: 696px) {
+  .project__subtitle {
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 16px;
+  }
+}

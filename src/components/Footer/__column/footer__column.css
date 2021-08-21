@@ -1,0 +1,13 @@
+.footer__column {
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 540px) {
+  .footer__column {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+}

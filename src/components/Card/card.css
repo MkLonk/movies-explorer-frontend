@@ -1,0 +1,21 @@
+.card {
+  width: 100%;
+  max-width: 360px;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: 54px 200px 65px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+@media screen and (max-width: 918px) {
+  .card {
+    grid-template-rows: 54px 190px 65px;
+  }
+}
+
+@media screen and (max-width: 636px) {
+  .card {
+    grid-template-rows: 46px 168px 57px;
+  }
+}

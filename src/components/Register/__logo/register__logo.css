@@ -1,0 +1,13 @@
+.register__logo {
+  display: block;
+  background-image: url(../../../images/logo.svg);
+  width: 38px;
+  height: 38px;
+  margin-bottom: 40px;
+}
+
+@media screen and (max-width: 470px) {
+  .register__logo {
+    margin: 0 auto 50px;
+  }
+}

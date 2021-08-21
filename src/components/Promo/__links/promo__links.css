@@ -1,0 +1,11 @@
+.promo__links {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+@media screen and (max-width: 420px) {
+  .promo__links {
+    padding-bottom: 17px;
+  }
+}

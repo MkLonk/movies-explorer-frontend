@@ -1,0 +1,30 @@
+.search-form__row {
+  /* min-height: 46px; */
+  display: flex;
+  padding-bottom: 9px;
+  margin-bottom: 29px;
+  border-bottom: 1px solid #E8E8E8;
+  align-items: center;
+}
+
+.search-form__row:last-child {
+  justify-content: center;
+  border-bottom: none;
+  margin: 0;
+  padding-bottom: 48px;
+}
+
+@media screen and (max-width: 918px) {
+  .search-form__row:last-child {
+    padding-bottom: 61px;
+  }
+}
+
+@media screen and (max-width: 636px) {
+  .search-form__row {
+    margin-bottom: 42px;
+  }
+  .search-form__row:last-child {
+    padding-bottom: 50px;
+  }
+}

@@ -1,0 +1,16 @@
+.about {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+}
+
+@media screen and (max-width: 868px) {
+  .about {
+    margin-bottom: 90px;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  .about {
+    margin-bottom: 69px;
+  }
+}

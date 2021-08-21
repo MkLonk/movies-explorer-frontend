@@ -1,0 +1,38 @@
+.project__note {
+  max-width: 550px;
+}
+
+@media screen and (max-width: 1280px)/*  and (min-width: 1241px) */ {
+  .project__note {
+    max-width: calc((100vw - 180px) /2);
+  }
+}
+
+@media screen and (max-width: 868px)  /* and  (min-width: 828px) */ {
+  .project__note {
+    max-width: 344px;
+  }
+}
+
+@media screen and (max-width: 818px)  /* and  (min-width: 828px) */ {
+  .project__note {
+    max-width: calc((100vw - 130px) /2);
+  }
+}
+
+@media screen and (max-width: 768px)  /* and  (min-width: 828px) */ {
+  .project__note {
+    max-width: 319px;
+  }
+}
+
+@media screen and (max-width: 696px)  /* and  (min-width: 828px) */ {
+  .project__note {
+    max-width: 100%;
+    margin-bottom: 56px;
+  }
+
+  .project__note:last-child {
+    margin-bottom: 0;
+  }
+}
