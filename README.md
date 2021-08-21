@@ -14,5 +14,7 @@
 
 
 ## Ссылка на проект
+
+  https://www.figma.com/file/KmT10Rj4KAjRvKuZiF6LQo/Mihailov%D0%9C_22_Diplom?node-id=344%3A0 - макет в figma
   http://diploma.mihailov.nomoredomains.club/ - только фронтенд.
   https://api.diploma.mihailov.nomoredomains.club - только API.
