@@ -14,5 +14,5 @@
 
 
 ## Ссылка на проект
-  https://diploma.mihailov.nomoredomains.club - только фронтенд.
+  http://diploma.mihailov.nomoredomains.club/ - только фронтенд.
   https://api.diploma.mihailov.nomoredomains.club - только API.
