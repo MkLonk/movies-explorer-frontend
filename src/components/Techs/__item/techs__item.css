@@ -1,0 +1,40 @@
+.techs__item {
+  min-width: 90px;
+  background-color: #E8E8E8;
+  padding: 22px 5px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  text-decoration: none;
+  margin-right: 10px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000;
+  transition: background-color 0.4s linear;
+  cursor: default;
+}
+
+.techs__item:last-child {
+  margin-right: 0;
+}
+
+.techs__item:hover {
+  background-color: #a8a8a8;
+}
+
+@media screen and (max-width: 828px) {
+  .techs__item {
+    min-width: 84px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  .techs__item {
+    padding: 21px 5px;
+    margin: 0;
+  }
+}

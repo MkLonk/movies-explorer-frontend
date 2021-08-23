@@ -1,0 +1,17 @@
+.card__duration {
+  margin: 18px;
+  margin-left: 0;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: right;
+  color: #A0A0A0;
+}
+
+@media screen and (max-width: 636px) {
+  .card__duration {
+    margin: 14px;
+    margin-left: 0;
+    font-size: 10px;
+  }
+}

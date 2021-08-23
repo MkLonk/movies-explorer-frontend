@@ -1,0 +1,17 @@
+.portfolio {
+  max-width: 1280px;
+  margin: 0 auto 125px;
+}
+
+@media screen and (max-width: 828px) {
+  .portfolio {
+    margin-bottom: 90px;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .portfolio {
+    font-size: 18px;
+    margin-bottom: 70px;
+  }
+}

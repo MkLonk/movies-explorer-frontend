@@ -1,0 +1,31 @@
+.project__notes {
+  margin: 0 70px 110px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 868px) and (min-width: 829px) {
+  .project__notes {
+    margin: 0 calc((100vw - 728px) /2) 70px;
+  }
+}
+
+@media screen and (max-width: 828px) {
+  .project__notes {
+    margin: 0 50px 93px;
+  }
+}
+
+@media screen and (max-width: 760px) and (min-width: 697px) {
+  .project__notes {
+    margin: 0 calc((100vw - 660px) /2) 70px;
+  }
+}
+
+@media screen and (max-width: 696px) {
+  .project__notes {
+    margin: 0 18px 60px;
+    flex-direction: column;
+  }
+}

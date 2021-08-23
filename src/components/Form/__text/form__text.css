@@ -1,0 +1,22 @@
+.form__text {
+  margin: 0 0 70px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #A0A0A0;
+}
+
+@media screen and (max-width: 768px) {
+  .form__text {
+    margin-bottom: 232px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .form__text {
+    margin-bottom: 30px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

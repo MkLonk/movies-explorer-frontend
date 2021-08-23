@@ -1,0 +1,21 @@
+.about__article-subtitle {
+  margin: 0 0 26px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+@media screen and (max-width: 868px) {
+  .about__article-subtitle {
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  .about__article-subtitle {
+    font-size: 11px;
+    line-height: 16px;
+  }
+}

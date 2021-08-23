@@ -1,0 +1,23 @@
+.portfolio__link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 19px 0;
+  padding-right: 6px;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.portfolio__link:nth-child(1) {
+  padding-top: 0;
+}
+
+.portfolio__link:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+@media screen and (max-width: 440px) {
+  .portfolio__link {
+    padding-right: 0;
+  }
+}

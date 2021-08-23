@@ -1,0 +1,14 @@
+.search-form__logo {
+  padding: 6px;
+  height: 34px;
+  width: 34px;
+  background-image: url('../../../images/search-logo.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media screen and (max-width: 636px) {
+  .search-form__logo {
+    display: none;
+  }
+}

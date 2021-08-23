@@ -1,0 +1,36 @@
+.about__title {
+  margin: 110px 70px 66px;
+  padding-bottom: 23px;
+  border-bottom: 1px solid #000;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+}
+
+@media screen and (max-width: 868px) {
+  .about__title {
+    margin: 90px calc((100vw - 728px) /2) 70px;
+  }
+}
+
+@media screen and (max-width: 828px) {
+  .about__title {
+    margin: 90px 50px 65px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .about__title {
+    margin: 70px calc((100vw - 660px) /2) 60px;
+    padding-bottom: 28px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+
+@media screen and (max-width: 688px) {
+  .about__title {
+    margin: 70px 14px 60px;
+  }
+}

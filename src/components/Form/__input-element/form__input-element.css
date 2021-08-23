@@ -1,0 +1,15 @@
+.form__input-element {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 9px;
+}
+
+.form__input-element:last-child {
+  margin-bottom: 80px;
+}
+
+@media screen and (max-width: 470px) {
+  .form__input-element:last-child {
+    margin-bottom: 157px;
+  }
+}

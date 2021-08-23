@@ -1,0 +1,10 @@
+.form__input {
+  background-color: #F9F9F9;
+  margin-bottom: 1px;
+  padding: 15px;
+  border: 0;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}

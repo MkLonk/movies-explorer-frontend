@@ -1,0 +1,29 @@
+.navigation__link {
+  text-decoration: none;
+  color: #000;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  margin-right: 20px;
+  transition: opacity 0.4s linear;
+  opacity: 1;
+}
+
+.navigation__link:last-child {
+  margin-right: 0;
+}
+
+.navigation__link:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__link {
+    margin: 0;
+    margin-bottom: 22px;
+    padding-bottom: 6px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+  }
+}

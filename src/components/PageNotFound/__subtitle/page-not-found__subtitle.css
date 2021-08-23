@@ -1,0 +1,16 @@
+.page-not-found__subtitle {
+  margin: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  margin-bottom: 184px;
+}
+
+@media screen and (max-width: 470px) {
+  .page-not-found__subtitle {
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 284px;
+  }
+}

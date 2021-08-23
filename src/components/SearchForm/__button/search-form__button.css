@@ -1,0 +1,21 @@
+.search-form__button {
+  padding: 0;
+  height: 34px;
+  width: 34px;
+  background-image: url(../../../images/search-button.svg);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+}
+
+@media screen and (max-width: 636px) {
+  .search-form__button {
+    padding-bottom: 9px;
+  }
+}
+
+.search-form__button:hover {
+  opacity: 0.8;
+}

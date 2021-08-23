@@ -1,0 +1,25 @@
+.about__article {
+  margin: 0 70px;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 868px) {
+  .about__article {
+    margin: 0 calc((100vw - 728px) /2);
+  }
+}
+
+@media screen and (max-width: 828px) {
+  .about__article {
+    margin: 0 50px;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  .about__article {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr;
+  }
+}

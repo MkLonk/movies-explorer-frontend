@@ -1,0 +1,38 @@
+.portfolio__title {
+  margin: 0 70px 50px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  color: #A0A0A0;
+}
+
+@media screen and (max-width: 868px) {
+  .portfolio__title {
+    margin: 0 calc((100vw - 728px) /2) 50px;
+  }
+}
+
+@media screen and (max-width: 828px) {
+  .portfolio__title {
+    margin: 0 50px 50px;
+  }
+}
+
+@media screen and (max-width: 760px) and (min-width: 697px) {
+  .portfolio__title {
+    margin: 0 calc((100vw - 660px) /2) 40px;
+  }
+}
+
+@media screen and (max-width: 688px) {
+  .portfolio__title {
+    margin: 0 14px 40px;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .portfolio__title {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

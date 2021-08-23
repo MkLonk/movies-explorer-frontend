@@ -1,0 +1,31 @@
+.footer {
+  max-width: 1140px;
+  padding: 79px 70px 0;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 908px) and (min-width: 829px) {
+  .footer {
+    padding: 79px calc((100vw - 768px) /2) 0;
+  }
+}
+
+@media screen and (max-width: 828px) {
+  .footer {
+    padding: 79px 30px 0;
+  }
+}
+
+@media screen and (max-width: 380px) and (min-width: 341px) {
+  .footer {
+    padding: 79px calc((100vw - 320px) /2) 0;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .footer {
+    padding: 79px 10px 0;
+  }
+}
