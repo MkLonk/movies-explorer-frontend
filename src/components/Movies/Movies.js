@@ -1,11 +1,20 @@
 import CardsList from "../CardsList/CardsList";
 import SearchForm from "../SearchForm/SearchForm";
 
-function Movies() {
+function Movies(props) {
   return (
     <div className="movies">
-      <SearchForm />
-      <CardsList />
+      <SearchForm
+        onSubmitSearch={props.onSubmitSearch}
+        isVisiblePreloader={props.isVisiblePreloader}
+        isVisibleTooltip={props.isVisibleTooltip}
+        messageTooltip={props.messageTooltip}
+      />
+
+      <CardsList
+        movieList={props.movieList}
+        /* pageWidth={props.pageWidth} */
+      />
     </div>
   )
 }

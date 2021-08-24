@@ -88,6 +88,7 @@
 @import url(./components/CardsList/card-list.css);
 @import url(./components/CardsList/__grid/card-list__grid.css);
 @import url(./components/CardsList/__load-more/card-list__load-more.css);
+@import url(./components/CardsList/__load-more/_hidden/card-list__load-more_hidden.css);
 
 @import url(./components/Card/card.css);
 @import url(./components/Card/__info/card__info.css);

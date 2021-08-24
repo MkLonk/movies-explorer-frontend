@@ -3,12 +3,16 @@
   display: flex;
   padding-bottom: 9px;
   margin-bottom: 29px;
-  border-bottom: 1px solid #E8E8E8;
   align-items: center;
+  justify-content: center;
 }
 
+.search-form__row:nth-child(1) {
+  border-bottom: 1px solid #E8E8E8;
+}
+
+
 .search-form__row:last-child {
-  justify-content: center;
   border-bottom: none;
   margin: 0;
   padding-bottom: 48px;
