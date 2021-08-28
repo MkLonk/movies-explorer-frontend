@@ -20,9 +20,9 @@
   padding: 0;
 }
 
-.card__button-like:active {
+/* .card__button-like:active {
   opacity: 1;
   background-image: url(../../../images/button__like-active.svg);
   padding: 0;
   transition: opacity 0.4s ease-in-out;
-}
+} */

@@ -1,89 +1,96 @@
 import React, { useState, useEffect } from 'react';
 
-import { cardWindowSettings } from "../../utils/utils";
-
-
 import Card from "../Card/Card";
 
 function CardsList(props) {
+
   const showOnlyLikes = props.showOnlyLikes
 
-  const [isVisibleMoreBtn, setIsVisibleMoreBtn] = useState(false); // 
-  const [counter, setCounter] = useState(90); // 
-  const initLimit = 12;
-  const initLoadMore = 3;
+  const [isVisibleMoreBtn, setIsVisibleMoreBtn] = useState(false); // показать кнопку 'Еще'
+  const [counterCards, setCounterCards] = useState(initLimitCards()); // сколько карточек отрисовать
 
+  // возвращает число карточек которые надо отрисовать при сабмите поиска 
+  function initLimitCards() {
+    let pageWidth = document.documentElement.scrollWidth;
 
-  /* */
-  const [pageWidth, setPageWidth] = useState(document.documentElement.scrollWidth);
-
-/*   useEffect(() => {
     if (pageWidth > 918) {
-      console.log('сет 1');
-      setCounter(cardWindowSettings.large.initLimit)
+      return 12;
     } else if (pageWidth > 636) {
-      console.log('сет 2');
+      return 8;
     } else {
-      console.log('сет 3');
+      return 5;
     }
-  }, [pageWidth]) */
+  }
 
-  window.addEventListener(`resize`, event => {
-    setPageWidth(document.documentElement.scrollWidth);
-  }, false)
+  // возвращает число карточек которые надо отрисовать при нажатии кнопки 'Еще'
+  function initLoadMore() {
+    let pageWidth = document.documentElement.scrollWidth;
+    if (pageWidth > 918) {
+      return 3;
+    } else {
+      return 2;
+    }
+  }
 
-  /* */
+  // когда выполнен сабмит поиска, установить кол-во отрисовываемых карточек
+  useEffect(() => {
+    setCounterCards(initLimitCards())
+  }, [props.counterSearch]);
 
-  function addMovies() {
-    setCounter(counter + 3);
+  // добавить карточки, кол-во зависит от размера окна
+  function addCards(e) {
+    e.preventDefault();
+    setCounterCards(counterCards + initLoadMore());
+    console.log('ещё')
   };
 
-
+  // показывать кнопку еще?
   useEffect(() => {
-    props.movieList.length >= counter ? setIsVisibleMoreBtn(true) : setIsVisibleMoreBtn(false);
-  }, [counter, props.movieList.length])
+    if (!showOnlyLikes) {
+      props.moviesList.length > counterCards ? setIsVisibleMoreBtn(true) : setIsVisibleMoreBtn(false);
+    }
+  }, [counterCards, props.moviesList, showOnlyLikes])
 
-  function renderAllCards(list) {
 
-    return list.map((card) => <Card key={card.id} card={card} />);
+  if (!showOnlyLikes) {
+
+    return (
+      < section className="card-list" >
+        <ul className="card-list__grid">
+          {props.moviesList.slice(0, counterCards).map((movieData, index) => {
+            return <Card
+              key={index}
+              card={movieData}
+              clickSaveMovie={props.clickSaveMovie}
+              clickDeleteMovie={props.clickDeleteMovie}
+              savedMoviesList={props.savedMoviesList}
+            />
+          })}
+        </ul>
+        {isVisibleMoreBtn ? <button className="card-list__load-more" onClick={addCards} /> : null}
+      </section >
+    )
+  } else {
+
+    return (
+      < section className="card-list" >
+        <ul className="card-list__grid">
+          {props.searchSavedMoviesList.map((movieData, index) => {
+            return <Card
+              key={index}
+              card={movieData}
+              clickSaveMovie={props.clickSaveMovie}
+              clickDeleteMovie={props.clickDeleteMovie}
+              savedMoviesList={props.savedMoviesList}
+              searchSavedMoviesList={props.searchSavedMoviesList}
+
+              showOnlyLikes={props.showOnlyLikes}
+            />
+          })}
+        </ul>
+      </section>
+    )
   }
-  function renderOnlyLikedCards(list) {
-
-    return list.map((card) => {
-      if (card.like) {
-        return <Card key={card.id} card={card} />;
-      }
-      return null;
-    });
-  }
-
-
-
-  return (
-
-    < section className="card-list" >
-
-      <ul className="card-list__grid">
-        {/* {showOnlyLikes ? renderOnlyLikedCards(props.movieList) : renderAllCards(props.movieList)} */}
-        {/* {props.movieList.map((card) => <Card key={card.id} card={card} />)} */}
-
-        {props.movieList.slice(0, counter).map((movie, index) => <Card key={index} card={movie} />)}
-
-      </ul>
-      {/* {renderCard(movieList, 3)} */}
-      {/* {showOnlyLikes ? '' : <button className="card-list__load-more" />} */}
-
-      {isVisibleMoreBtn ? <button className="card-list__load-more" onClick={addMovies} /> : null}
-
-      {/*       <button className={`card-list__load-more ${isVisibleMoreBtn ? '' : 'card-list__load-more_hidden'}`} onClick={addMovies} />
- */}
-      {/* {props.movieList.slice(0, counter).map((movie, index) => {
-        console.log(`movie=${movie.nameRU}, index=${index}`)
-      })} */}
-
-
-    </section >
-  )
 }
 
 export default CardsList;
