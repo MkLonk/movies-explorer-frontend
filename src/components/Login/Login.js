@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, } from 'react-router-dom';
 import { checkInputValidity } from '../../utils/checkInputValidity'
 
@@ -7,6 +7,7 @@ function Login(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isValidForm, setIsValidForm] = useState(false);
 
   const inputEmailRef = useRef(false); // инпут UserEmail
   const inputPasswordRef = useRef(false); // инпут UserPassword
@@ -28,6 +29,14 @@ function Login(props) {
     e.preventDefault();
     props.loginUser(email, password);
   }
+
+  useEffect(() => {
+    if (!userEmailErrorText && !userPasswordErrorText) {
+      setIsValidForm(true);
+    } else {
+      setIsValidForm(false);
+    }
+  }, [userEmailErrorText, userPasswordErrorText])
 
   return (
 
@@ -55,7 +64,15 @@ function Login(props) {
           </div>
 
         </div>
-        <button className="form__button" type="submit">Войти</button>
+        {/* <button className="form__button" type="submit">Войти</button> */}
+
+        <button className={`form__button ${isValidForm ? '' : 'form__button_type_inactive'}`}
+          type="submit" disabled={!isValidForm} >
+          Войти
+        </button>
+
+        {props.apiError ? <p className="form__error-message">{props.apiError}</p> : null}
+
         <p className="form__text">Ещё не зарегистрированы?
           <Link className="form__link" to="./signup">Регистрация</Link>
         </p>

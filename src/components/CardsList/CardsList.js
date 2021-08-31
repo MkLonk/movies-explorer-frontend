@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Route } from "react-router-dom";
+//import { loadSavedMovies, saveMovie, deleteMovie } from '../../utils/mainApi'
+
 
 import Card from "../Card/Card";
 
 function CardsList(props) {
-
-  const showOnlyLikes = props.showOnlyLikes
 
   const [isVisibleMoreBtn, setIsVisibleMoreBtn] = useState(false); // показать кнопку 'Еще'
   const [counterCards, setCounterCards] = useState(initLimitCards()); // сколько карточек отрисовать
@@ -32,65 +33,57 @@ function CardsList(props) {
     }
   }
 
-  // когда выполнен сабмит поиска, установить кол-во отрисовываемых карточек
-  useEffect(() => {
-    setCounterCards(initLimitCards())
-  }, [props.counterSearch]);
-
   // добавить карточки, кол-во зависит от размера окна
   function addCards(e) {
     e.preventDefault();
     setCounterCards(counterCards + initLoadMore());
-    console.log('ещё')
   };
+
+  // когда выполнен сабмит поиска, установить кол-во отрисовываемых карточек
+  useEffect(() => {
+    setCounterCards(initLimitCards())
+  }, []);
 
   // показывать кнопку еще?
   useEffect(() => {
-    if (!showOnlyLikes) {
-      props.moviesList.length > counterCards ? setIsVisibleMoreBtn(true) : setIsVisibleMoreBtn(false);
-    }
-  }, [counterCards, props.moviesList, showOnlyLikes])
+    props.listRenderMovies.length > counterCards ? setIsVisibleMoreBtn(true) : setIsVisibleMoreBtn(false);
+  }, [counterCards, props.listRenderMovies])
 
 
-  if (!showOnlyLikes) {
+  return (
+    < section className="card-list" >
 
-    return (
-      < section className="card-list" >
+      <Route exact path="(/movies)">
         <ul className="card-list__grid">
-          {props.moviesList.slice(0, counterCards).map((movieData, index) => {
+          {props.listRenderMovies.slice(0, counterCards).map((movieData, index) => {
             return <Card
               key={index}
               card={movieData}
               clickSaveMovie={props.clickSaveMovie}
               clickDeleteMovie={props.clickDeleteMovie}
-              savedMoviesList={props.savedMoviesList}
+              listSavedMovies={props.listSavedMovies}
             />
           })}
         </ul>
         {isVisibleMoreBtn ? <button className="card-list__load-more" onClick={addCards} /> : null}
-      </section >
-    )
-  } else {
+      </Route>
 
-    return (
-      < section className="card-list" >
+      <Route exact path="(/saved-movies)">
         <ul className="card-list__grid">
-          {props.searchSavedMoviesList.map((movieData, index) => {
+          {props.listRenderMovies.slice(0, counterCards).map((movieData, index) => {
             return <Card
               key={index}
-              card={movieData}
+              card={{ ...movieData, id: movieData.movieId }}
               clickSaveMovie={props.clickSaveMovie}
               clickDeleteMovie={props.clickDeleteMovie}
-              savedMoviesList={props.savedMoviesList}
-              searchSavedMoviesList={props.searchSavedMoviesList}
-
-              showOnlyLikes={props.showOnlyLikes}
+              listSavedMovies={props.listSavedMovies}
             />
           })}
         </ul>
-      </section>
-    )
-  }
+      </Route>
+
+    </section >
+  )
 }
 
 export default CardsList;

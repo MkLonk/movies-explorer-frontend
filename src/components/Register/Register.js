@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import { checkInputValidity } from '../../utils/checkInputValidity'
@@ -10,6 +10,7 @@ function Register(props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isValidForm, setIsValidForm] = useState(false);
 
   const inputNameRef = useRef(false); // инпут UserName
   const inputEmailRef = useRef(false); // инпут UserEmail
@@ -39,6 +40,15 @@ function Register(props) {
     props.registerUser(name, email, password);
   }
 
+  useEffect(() => {
+    if (!userNameErrorText && !userEmailErrorText && !userPasswordErrorText) {
+      setIsValidForm(true);
+    } else {
+      setIsValidForm(false);
+    }
+  }, [userNameErrorText, userEmailErrorText, userPasswordErrorText])
+
+
   return (
 
     <section className="register">
@@ -53,14 +63,14 @@ function Register(props) {
             <label className="form__input-label" htmlFor="user-name-input">Имя</label>
             <input className="form__input" id="user-name-input" type="text"
               name="userNameInput" ref={inputNameRef} onChange={handleNameChange}
-              placeholder={currentUser.name} maxLength={30} minLength={3} required />
+              placeholder="Пользователль" maxLength={30} minLength={3} required />
             <span className="form__input-error" id="user-name-input-error">{userNameErrorText}</span>
           </div>
 
           <div className="form__input-element">
             <label className="form__input-label" htmlFor="user-email-input">E-mail</label>
             <input className="form__input" id="user-email-input" type="email"
-              placeholder={currentUser.email} name="userEmailInput" ref={inputEmailRef} onChange={handleEmailChange} required />
+              placeholder="user@mail.com" name="userEmailInput" ref={inputEmailRef} onChange={handleEmailChange} required />
             <span className="form__input-error" id="user-email-input-error">{userEmailErrorText}</span>
           </div>
 
@@ -74,7 +84,13 @@ function Register(props) {
 
         </div>
 
-        <button className="form__button" type="submit">Зарегистрироваться</button>
+        <button className={`form__button ${isValidForm ? '' : 'form__button_type_inactive'}`}
+          type="submit" disabled={!isValidForm} >
+          Зарегистрироваться
+        </button>
+
+        {props.apiError ? <p className="form__error-message">{props.apiError}</p> : null}
+
         <p className="form__text">Уже зарегистрированы?
           <Link className="form__link" to="./signin">Войти</Link>
         </p>

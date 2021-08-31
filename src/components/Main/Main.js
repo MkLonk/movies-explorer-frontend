@@ -4,10 +4,9 @@ import Project from "../Project/Project";
 import Promo from "../Promo/Promo";
 import Techs from "../Techs/Techs";
 
+
 function Main() {
-
   return (
-
     <div className="main">
       <Promo />
       <Project />
