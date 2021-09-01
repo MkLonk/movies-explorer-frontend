@@ -1,13 +1,5 @@
 import { getResponse, urlMainApi } from './utils'
 
-// const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTAzODg0ODZkYTFkOTc0YTc1ZTA4MTMiLCJpYXQiOjE2Mjk5NzM0MDgsImV4cCI6MTYzMDU3ODIwOH0.ktxyM1fUWNBVrDdmNByc7gf9H4ECZrEDTpRjsxqM-N4';
-/* let token = '';
-
-if (localStorage.getItem('jwt')) {
-  token = localStorage.getItem('jwt')
-} */
-
-
 export function loadSavedMovies(token) {
   return fetch(`${urlMainApi}/movies/`, {
     method: 'GET',
@@ -21,13 +13,13 @@ export function loadSavedMovies(token) {
 
 export function saveMovie(movieData, token) {
 
-  function isValidUrl(url) {
+/*   function isValidUrl(url) {
     const objRE = /(^https?:\/\/)?[a-z0-9~_\-\.]+\.[a-z]{2,9}(\/|:|\?[!-~]*)?$/i;
     return objRE.test(url);
-  }
+  } */
 
   if (!movieData.country) movieData.country = 'Нет данных.'
-  if (!isValidUrl(movieData.trailerLink)) { movieData.trailerLink = 'http://diploma.mihailov.nomoredomains.club/PageNotFound' }
+//  if (!isValidUrl(movieData.trailerLink)) { movieData.trailerLink = 'http://diploma.mihailov.nomoredomains.club/PageNotFound' }
 
   const raw = JSON.stringify({
     country: movieData.country,

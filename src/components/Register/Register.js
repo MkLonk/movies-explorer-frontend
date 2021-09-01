@@ -1,11 +1,11 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, /* useContext, */ useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext'
+//import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import { checkInputValidity } from '../../utils/checkInputValidity'
 
 function Register(props) {
 
-  const currentUser = useContext(CurrentUserContext);
+  //const currentUser = useContext(CurrentUserContext);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

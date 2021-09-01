@@ -1,5 +1,6 @@
 .navigation__link_active {
   font-weight: 500;
+  border-bottom: 1px #000 solid;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { checkInputValidity } from '../../utils/checkInputValidity'
 
 
@@ -38,9 +38,10 @@ function Login(props) {
     }
   }, [userEmailErrorText, userPasswordErrorText])
 
-  return (
 
-    <section className="login">
+  return (
+    < section className = "login" >
+      { props.loggedIn ? <Redirect to='/' /> : null }
       <Link className="login__logo" to="./" />
       <h2 className="login__title">Рады видеть!</h2>
 
@@ -78,7 +79,7 @@ function Login(props) {
         </p>
 
       </form>
-    </section>
+    </section >
   )
 }
 

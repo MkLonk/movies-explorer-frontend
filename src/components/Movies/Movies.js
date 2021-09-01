@@ -4,24 +4,29 @@ import SearchForm from "../SearchForm/SearchForm";
 
 
 function Movies(props) {
-  //  if (props.listSavedMovies.length === 0 && history.location.pathname === '/saved-movies') {
 
-  // сообщения в толтип props.valueSearch.length === 0 && props.counterSearch > 0
   useEffect(() => {
-    if (props.counterSearch === 0) {
-      props.hideTooltip();
-    } else if (props.listRenderMovies.length === 0 && props.counterSearch > 0) {
-      props.showTooltip('Нечего не найдено');
-    } else {
+    if (!props.isCheckedShortFilm && props.listRenderMovies.length === 0) {
+      props.showTooltip('Нечего не найдено, попробуйте отключить фильтр и повторить поиск')
+    }
+
+    if (props.isCheckedShortFilm && props.listRenderMovies.length === 0) {
+      props.showTooltip('Нечего не найдено')
+    }
+
+    if (!props.isCheckedShortFilm && props.listRenderMovies.length > 0) {
       props.hideTooltip();
     }
-  }, [])
 
-  const loadContent = props.loadContent
+    if (props.isCheckedShortFilm && props.listRenderMovies.length > 0) {
+      props.hideTooltip();
+    }
+  }, [props.isCheckedShortFilm]);
 
   useEffect(() => {
-    loadContent()
-  }, [])
+    props.hideTooltip();
+  }, []);
+
 
   return (
     <div className="movies">

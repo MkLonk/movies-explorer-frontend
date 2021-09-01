@@ -13,9 +13,6 @@ import {
 } from '../../utils/mainApi'
 import { loadMovies } from '../../utils/moviesApi'
 
-
-
-/* import './App.css'; */
 import Header from '../Header/Header'
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -28,10 +25,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import SavedMovies from '../SavedMovies/SavedMovies';
 
 
-/* import { loadMovies } from '../../utils/moviesApi' */
-
 function App() {
-
   /****************************************
   * Стейт переменные
   ****************************************/
@@ -46,9 +40,9 @@ function App() {
 
   // сохраняет фильм на сервере и ставит лайк его карточке
   function clickSaveMovie(movieData) {
-    //saveMovie(movieData)
-    //console.log(movieData)
-    saveMovie(movieData)
+    const token = localStorage.getItem('jwt');
+
+    saveMovie(movieData, token)
       .then(res => {
         setListSavedMovies([...listSavedMovies, res.data])
       })
@@ -58,8 +52,9 @@ function App() {
   // удаляет фильм с сервера и из listSavedSearchMovies, снять лайк с карточки
   function clickDeleteMovie(movieId) {
     console.log('movieId', movieId);
+    const token = localStorage.getItem('jwt');
 
-    deleteMovie(movieId)
+    deleteMovie(movieId, token)
       .then(res => {
         console.log(res.data.message);
         setListSavedMovies(listSavedMovies.filter((element) => element._id !== movieId));
@@ -70,7 +65,7 @@ function App() {
 
   const [listAllMovies, setListAllMovies] = useState([]); // список всех найденых фильмов
   const [listSavedMovies, setListSavedMovies] = useState([]); //список сохранённых фильмов
-  const [listSavedSearchMovies, setListSavedSearchMovies] = useState([]); //список фильмов отфильтрованный поиском
+  const [listSavedSearchMovies, setListSavedSearchMovies] = useState([]); // список фильмов отфильтрованный поиском
 
   const [isVisiblePreloader, setIsVisiblePreloader] = useState(false); // показать Preloader
   const [isVisibleTooltip, setIsVisibleTooltip] = useState(false); // показать Tooltip
@@ -78,19 +73,11 @@ function App() {
   const [isCheckedShortFilm, setIsCheckedShortFilm] = useState(true); // чекбокс 'короткометражки'
 
   const [serverError, setServerError] = useState(null); // сообщение от сервера
-  const [valueSearch, setValueSearch] = useState(''); // значение инпута поиска
-  const [counterSearch, setCounterSearch] = useState(0); // счетчик поиска 
 
-  // функция загрузки сохранённых карточек
-  function loadContent() {
-    const token = localStorage.getItem('jwt');
-    loadSavedMovies(token)
-      .then((res) => {
-        setListSavedMovies(res)
-        setListSavedSearchMovies(res)
-        console.log('setListSavedMovies')
-      })
-      .catch()
+
+  // сбрасываем список сохранённых отфильтрованный поиском фильмов
+  function resetListSavedSearchMovies() {
+    setListSavedSearchMovies(listSavedMovies)
   }
 
   // функция поиска по массиву arr с ключевым словом search
@@ -128,13 +115,23 @@ function App() {
     loadMovies()
       .then((res) => {
         setIsVisiblePreloader(false);
-        if (searchByArray(res, search).length === 0) {
+
+        const searchList = searchByArray(res, search)
+
+        if (searchList.length === 0) {
           showTooltip('Нечего не найдено');
+          setListAllMovies([]);
         } else {
-          localStorage.setItem('moviesList', JSON.stringify(searchByArray(res, search)));
-          setListAllMovies(searchByArray(res, search));
+
+          if (isCheckedShortFilm) {
+            localStorage.setItem('moviesList', JSON.stringify(searchList));
+            setListAllMovies(searchList);
+          } else {
+            filterArrayByShortFilms(searchList).length === 0 ?
+              showTooltip('Нечего не найдено, попробуйте отключить фильтр и повторить поиск') :
+              setListAllMovies(filterArrayByShortFilms(searchList))
+          }
         }
-        console.log(res)
       })
       .catch((err) => {
         setIsVisiblePreloader(false);
@@ -143,9 +140,52 @@ function App() {
       });
   }
 
-  // поиск по сохранённым фильмам
+  /*   function searchSavedMovies(search) {
+      const token = localStorage.getItem('jwt');
+      loadSavedMovies(token)
+        .then((res) => {
+          const searchList = searchByArray(res, search)
+          if (!searchList) {
+            setListSavedSearchMovies([])
+            console.log(searchList)
+          } else {
+            console.log(searchList)
+            setListSavedSearchMovies(searchList)
+          }
+        })
+        .catch(err => console.log(err))
+    } */
+
   function searchSavedMovies(search) {
-    setListSavedSearchMovies(searchByArray(listSavedMovies, search))
+    const token = localStorage.getItem('jwt');
+    console.log('поиск')
+
+    loadSavedMovies(token)
+      .then((res) => {
+        res.length === 0 ?
+          showTooltip('Нет сохранённых фильмов') :
+          setListSavedSearchMovies(filterSavedMovies(res, search))
+      })
+      .catch(err => console.log(err))
+  }
+
+  function filterSavedMovies(arr, search) {
+    const searchList = searchByArray(arr, search);
+    const filterSearchList = filterArrayByShortFilms(searchByArray(arr, search));
+
+    if (isCheckedShortFilm) {
+      searchList.length === 0 ?
+        showTooltip('Нечего не найдено') :
+        hideTooltip();
+      return searchList;
+    }
+
+    if (!isCheckedShortFilm) {
+      filterSearchList.length === 0 ?
+        showTooltip('Нечего не найдено, попробуйте отключить фильтр и повторить поиск') :
+        hideTooltip();
+      return filterSearchList;
+    }
   }
 
   /****************************************
@@ -218,6 +258,18 @@ function App() {
           if (localStorage.getItem('moviesList')) {
             setListAllMovies(JSON.parse(localStorage.getItem('moviesList')));
           }
+
+          loadSavedMovies(token)
+            .then((res) => {
+              if (!res) {
+                setListSavedMovies([])
+                setListSavedSearchMovies([])
+              } else {
+                setListSavedMovies(res)
+                setListSavedSearchMovies(res)
+              }
+            })
+            .catch(err => console.log(err))
         })
         .catch(err => console.log(`Ошибка при загрузки информации о пользователе: ${err}`));
     }
@@ -255,7 +307,7 @@ function App() {
           </Route>
 
           <Route path="/signin">
-            <Login loginUser={loginUser} apiError={serverError} />
+            <Login loginUser={loginUser} apiError={serverError} loggedIn={loggedIn} />
           </Route>
 
           <Route path="(/)" exact>
@@ -268,9 +320,9 @@ function App() {
 
           <ProtectedRoute path="/movies" exact loggedIn={loggedIn} >
             <Movies
-              loadContent={loadContent} // функция загрузки контента 
-              valueSearch={valueSearch}
-              counterSearch={counterSearch}
+              //loadContent={loadContent} // функция загрузки контента 
+              //valueSearch={valueSearch}
+              //counterSearch={counterSearch}
               // передать в SearchForm
               searchMovies={searchAllMovies} // функция поиска по всем фильмам
               isVisiblePreloader={isVisiblePreloader} // показать прелоадер
@@ -294,9 +346,9 @@ function App() {
           <ProtectedRoute path="/saved-movies" exact loggedIn={loggedIn} >
             <SavedMovies
 
-              loadContent={loadContent}
               // передать в SearchForm
-              searchMovies={searchSavedMovies} // функция поиска по сохранённым фильмам
+              //setValueSearch={setValueSearch}
+              //searchMovies={searchSavedMovies} // функция поиска по сохранённым фильмам
               isVisiblePreloader={isVisiblePreloader} // показать прелоадер
               isVisibleTooltip={isVisibleTooltip} // показать тултип
               messageTooltip={messageTooltip} // сообщение тултипа
@@ -306,6 +358,9 @@ function App() {
               // передать в CardsList
               showTooltip={showTooltip}
               hideTooltip={hideTooltip}
+              resetListSavedSearchMovies={resetListSavedSearchMovies}
+
+              searchMovies={searchSavedMovies}
               listRenderMovies={isCheckedShortFilm ? //список фильмов для рендеринга
                 listSavedSearchMovies :
                 filterArrayByShortFilms(listSavedSearchMovies)}
