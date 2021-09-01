@@ -17,5 +17,5 @@ export const getResponse = (res) => {
 
 
 export const urlMoviesApi = 'https://api.nomoreparties.co/beatfilm-movies';
-//export const urlMainApi = 'https://api.diploma.mihailov.nomoredomains.club';
-export const urlMainApi = 'http://localhost:3001';
+export const urlMainApi = 'https://api.diploma.mihailov.nomoredomains.club';
+//export const urlMainApi = 'http://localhost:3001';
