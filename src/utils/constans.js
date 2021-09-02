@@ -5,6 +5,8 @@ const webAppLink = 'https://mesto.lonk.nomoredomains.club';
 const webStaticLink = 'https://mklonk.github.io/how-to-learn/index.html';
 const webAdaptiveLink = 'https://mklonk.github.io/russian-travel/index.html';
 
+const DURATION_SHORT_FILM = 40;
+
 
 
 const cardWindowSettings = {
@@ -30,5 +32,6 @@ export {
   webStaticLink,
   webAdaptiveLink,
 
-  cardWindowSettings
+  cardWindowSettings,
+  DURATION_SHORT_FILM
 };

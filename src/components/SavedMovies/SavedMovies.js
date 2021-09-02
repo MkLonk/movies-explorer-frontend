@@ -1,36 +1,30 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import SearchForm from "../SearchForm/SearchForm";
 import CardsList from "../CardsList/CardsList";
+// import { filterMovies } from '../../utils/utils'
 
 
 function SavedMovies(props) {
 
-  const history = useHistory();
+
+  /*   const {
+      listRenderMovies,
+      listSavedMovies,
+      showTooltip,
+      hideTooltip,
+      setListSavedMoviesRender
+    } = props; */
+
   const {
-    listRenderMovies,
-    listSavedMovies,
     showTooltip,
-    hideTooltip } = props;
-
-  // сообщения в толтип
-  useEffect(() => {
-    if (listSavedMovies.length === 0 && history.location.pathname === '/saved-movies') {
-      showTooltip('Нет сохранённых фильмов');
-    }
-
-    if (listSavedMovies.length > 0 && history.location.pathname === '/saved-movies') {
-      if (listRenderMovies.length === 0) {
-        showTooltip('Нечего не найдено, попробуйте отключить фильтр');
-      } else if (listRenderMovies.length > 0) {
-        hideTooltip();
-      }
-    }
-  })
+    setListSavedMoviesRender
+  } = props;
 
   useEffect(() => {
-    props.searchMovies('');
-  }, [])
+    if (props.listSavedMovies.length === 0) showTooltip('У Вас еще нет сохраненный фильмов')
+    setListSavedMoviesRender(props.listSavedMovies)
+  }, []);
+
 
   return (
     <div className="saved-movies" >
@@ -46,9 +40,8 @@ function SavedMovies(props) {
 
       <CardsList
         listRenderMovies={props.listRenderMovies} // список фильмов для рендера
-        //listRenderMovies={listRenderMovies} // список фильмов для рендера
         listSavedMovies={props.listSavedMovies} // список сохранённых фильмов
-        clickSaveMovie={props.clickSaveMovie} // клик сохранить
+        //clickSaveMovie={props.clickSaveMovie} // клик сохранить
         clickDeleteMovie={props.clickDeleteMovie} // клик удалить
       />
     </div>

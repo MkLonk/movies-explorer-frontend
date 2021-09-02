@@ -1,32 +1,16 @@
 import React, { useEffect } from 'react';
 import CardsList from "../CardsList/CardsList";
 import SearchForm from "../SearchForm/SearchForm";
+//import { filterMovies } from '../../utils/utils'
 
 
 function Movies(props) {
 
-  useEffect(() => {
-    if (!props.isCheckedShortFilm && props.listRenderMovies.length === 0) {
-      props.showTooltip('Нечего не найдено, попробуйте отключить фильтр и повторить поиск')
-    }
-
-    if (props.isCheckedShortFilm && props.listRenderMovies.length === 0) {
-      props.showTooltip('Нечего не найдено')
-    }
-
-    if (!props.isCheckedShortFilm && props.listRenderMovies.length > 0) {
-      props.hideTooltip();
-    }
-
-    if (props.isCheckedShortFilm && props.listRenderMovies.length > 0) {
-      props.hideTooltip();
-    }
-  }, [props.isCheckedShortFilm]);
+  const { hideTooltip, } = props;
 
   useEffect(() => {
-    props.hideTooltip();
+    hideTooltip();
   }, []);
-
 
   return (
     <div className="movies">

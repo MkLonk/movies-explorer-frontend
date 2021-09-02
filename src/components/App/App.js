@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import { CurrentUserContext, defaultUser } from '../../contexts/CurrentUserContext'
 
 import {
@@ -12,6 +12,8 @@ import {
   changeUserData
 } from '../../utils/mainApi'
 import { loadMovies } from '../../utils/moviesApi'
+import { searchFilterMovies } from '../../utils/utils'
+
 
 import Header from '../Header/Header'
 import Main from '../Main/Main';
@@ -29,16 +31,28 @@ function App() {
   /****************************************
   * Стейт переменные
   ****************************************/
+  // Общие
   const history = useHistory();
-
   const [currentUser, setCurrentUser] = useState(defaultUser);
   const [loggedIn, setLoggedIn] = useState(false); // залогинен ли пользователь
+
+  // Для работы c контентом
+  const [listAllMovies, setListAllMovies] = useState([]); // список фильмов c BeatFilm
+  const [listAllMoviesRender, setListAllMoviesRender] = useState([]); // список фильмов c BeatFilm
+  const [listSavedMovies, setListSavedMovies] = useState([]); //список сохранённых фильмов
+  const [listSavedMoviesRender, setListSavedMoviesRender] = useState([]); // список фильмов отфильтрованный поиском
+  const [isVisiblePreloader, setIsVisiblePreloader] = useState(false); // показать Preloader
+  const [isVisibleTooltip, setIsVisibleTooltip] = useState(false); // показать Tooltip
+  const [messageTooltip, setMessageTooltip] = useState(''); // сообщение в Tooltip
+  const [isCheckedShortFilm, setIsCheckedShortFilm] = useState(true); // чекбокс 'короткометражки'
+  const [serverError, setServerError] = useState(null); // сообщение от сервера
+  // const [valueSearch, setValueSearch] = useState(''); // значение инпута
+
 
   /****************************************
   * Функции работы c контентом
   ****************************************/
-
-  // сохраняет фильм на сервере и ставит лайк его карточке
+  // сохраняет фильм на сервере (лайк на карточке)
   function clickSaveMovie(movieData) {
     const token = localStorage.getItem('jwt');
 
@@ -49,7 +63,7 @@ function App() {
       .catch(err => console.log(err))
   }
 
-  // удаляет фильм с сервера и из listSavedSearchMovies, снять лайк с карточки
+  // удаляет фильм с сервера (убрать лайк с карточки)
   function clickDeleteMovie(movieId) {
     console.log('movieId', movieId);
     const token = localStorage.getItem('jwt');
@@ -58,36 +72,9 @@ function App() {
       .then(res => {
         console.log(res.data.message);
         setListSavedMovies(listSavedMovies.filter((element) => element._id !== movieId));
-        setListSavedSearchMovies(listSavedMovies.filter((element) => element._id !== movieId));
+        setListSavedMoviesRender(listSavedMoviesRender.filter((element) => element._id !== movieId));
       })
       .catch(err => console.log(err))
-  }
-
-  const [listAllMovies, setListAllMovies] = useState([]); // список всех найденых фильмов
-  const [listSavedMovies, setListSavedMovies] = useState([]); //список сохранённых фильмов
-  const [listSavedSearchMovies, setListSavedSearchMovies] = useState([]); // список фильмов отфильтрованный поиском
-
-  const [isVisiblePreloader, setIsVisiblePreloader] = useState(false); // показать Preloader
-  const [isVisibleTooltip, setIsVisibleTooltip] = useState(false); // показать Tooltip
-  const [messageTooltip, setMessageTooltip] = useState(''); // сообщение в Tooltip
-  const [isCheckedShortFilm, setIsCheckedShortFilm] = useState(true); // чекбокс 'короткометражки'
-
-  const [serverError, setServerError] = useState(null); // сообщение от сервера
-
-
-  // сбрасываем список сохранённых отфильтрованный поиском фильмов
-  function resetListSavedSearchMovies() {
-    setListSavedSearchMovies(listSavedMovies)
-  }
-
-  // функция поиска по массиву arr с ключевым словом search
-  function searchByArray(arr, search) {
-    return arr.filter(movie => movie.nameRU.toLowerCase().includes(search.toLowerCase()));
-  }
-
-  // функция оставляет в массиве arr только элементы с duration >= 40
-  function filterArrayByShortFilms(arr) {
-    return arr.filter(movie => movie.duration >= 40);
   }
 
   // сообщение в tooltip
@@ -105,93 +92,73 @@ function App() {
   // поиск по всем фильмам
   function searchAllMovies(search) {
     if (search.length === 0) {
-      //setValueSearch(search)
       showTooltip('Нужно ввести ключевое слово');
       return;
     }
+    setIsVisibleTooltip(false); // скрыть тултип
+    setIsVisiblePreloader(true); // показать прелоадер
 
-    setIsVisibleTooltip(false);
-    setIsVisiblePreloader(true);
-    loadMovies()
-      .then((res) => {
-        setIsVisiblePreloader(false);
+    if (listAllMovies.length === 0) { // поиск выполняется впервые
+      console.log('поиск выполняется впервые');
 
-        const searchList = searchByArray(res, search)
-
-        if (searchList.length === 0) {
-          showTooltip('Нечего не найдено');
-          setListAllMovies([]);
-        } else {
-
-          if (isCheckedShortFilm) {
-            localStorage.setItem('moviesList', JSON.stringify(searchList));
-            setListAllMovies(searchList);
-          } else {
-            filterArrayByShortFilms(searchList).length === 0 ?
-              showTooltip('Нечего не найдено, попробуйте отключить фильтр и повторить поиск') :
-              setListAllMovies(filterArrayByShortFilms(searchList))
-          }
-        }
-      })
-      .catch((err) => {
-        setIsVisiblePreloader(false);
-        showTooltip('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-        console.log(err)
-      });
-  }
-
-  /*   function searchSavedMovies(search) {
-      const token = localStorage.getItem('jwt');
-      loadSavedMovies(token)
+      loadMovies()
         .then((res) => {
-          const searchList = searchByArray(res, search)
-          if (!searchList) {
-            setListSavedSearchMovies([])
-            console.log(searchList)
-          } else {
-            console.log(searchList)
-            setListSavedSearchMovies(searchList)
-          }
+          setIsVisiblePreloader(false);
+          setListAllMovies(res)
+
+          searchFilterMovies(
+            res,
+            setListAllMoviesRender,
+            search,
+            isCheckedShortFilm,
+            showTooltip,
+            hideTooltip,
+            true
+          )
         })
-        .catch(err => console.log(err))
-    } */
+        .catch((err) => {
+          setIsVisiblePreloader(false);
+          showTooltip('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+          console.log(err)
+        });
+    } else {
 
-  function searchSavedMovies(search) {
-    const token = localStorage.getItem('jwt');
-    console.log('поиск')
+      console.log('вторичный выполняется поиск');
 
-    loadSavedMovies(token)
-      .then((res) => {
-        res.length === 0 ?
-          showTooltip('Нет сохранённых фильмов') :
-          setListSavedSearchMovies(filterSavedMovies(res, search))
-      })
-      .catch(err => console.log(err))
+      searchFilterMovies(
+        listAllMovies,
+        setListAllMoviesRender,
+        search,
+        isCheckedShortFilm,
+        showTooltip,
+        hideTooltip,
+        true
+      )
+
+      setIsVisiblePreloader(false);
+    }
   }
 
-  function filterSavedMovies(arr, search) {
-    const searchList = searchByArray(arr, search);
-    const filterSearchList = filterArrayByShortFilms(searchByArray(arr, search));
+  // поиск по сохранённым фильмам
+  function searchSavedMovies(search) {
+    setIsVisibleTooltip(false); // скрыть тултип
+    setIsVisiblePreloader(true); // показать прелоадер
 
-    if (isCheckedShortFilm) {
-      searchList.length === 0 ?
-        showTooltip('Нечего не найдено') :
-        hideTooltip();
-      return searchList;
-    }
+    searchFilterMovies(
+      listSavedMovies,
+      setListSavedMoviesRender,
+      search,
+      isCheckedShortFilm,
+      showTooltip,
+      hideTooltip
+    )
 
-    if (!isCheckedShortFilm) {
-      filterSearchList.length === 0 ?
-        showTooltip('Нечего не найдено, попробуйте отключить фильтр и повторить поиск') :
-        hideTooltip();
-      return filterSearchList;
-    }
+    setIsVisiblePreloader(false); // показать прелоадер
   }
 
   /****************************************
-  * Функции работы акаунта
+  * Функции работы аккаунта
   ****************************************/
-
   // функция входа пользователя
   function loginUser(email, password) {
     setServerError(null)
@@ -210,7 +177,6 @@ function App() {
   // функция регистрации
   function registerUser(name, email, password) {
     setServerError(null)
-
     register(name, email, password)
       .then(res => {
         console.log(res)
@@ -227,70 +193,85 @@ function App() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
     localStorage.removeItem('moviesList');
+    setListAllMoviesRender([]);
     console.log('Вы вышли из аккаунта');
     history.push('/signin');
   }
 
-  // при загрузки страницы проверить права пользователя
+  // функция изменения данных пользоваталя
+  function updateUser(userData, showMessage) {
+    const token = localStorage.getItem('jwt');
+    changeUserData(userData, token)
+      .then((res) => {
+        setCurrentUser(res);
+        showMessage('Данные успешно изменены!', true);
+        console.log('данные изменены');
+      })
+      .catch(err => {
+        showMessage('Ой! Что-то пошло не так ...');
+        console.log(err);
+      })
+  }
+
+  // функция - возврат назад
+  function handleGoBack() {
+    return history.goBack();
+  }
+
+
+  /****************************************
+  * Эфекты при загрузке страницы и логине 
+  ****************************************/
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
+  // при загрузке страницы проверить права пользователя
   useEffect(() => {
     const token = localStorage.getItem('jwt');
-
     if (token) {
+      setIsAuthChecking(true);
       getUserData(token)
         .then((res) => {
+          //setCurrentUser(res);
           setLoggedIn(true);
+          //history.push('/');
+          //history.goBack();
         })
         .catch(err => {
           localStorage.removeItem('jwt');
-          console.log(`Ошибка при проверки прав пользователя: ${err}`)
-        });
+          console.log(`Ошибка при проверке прав пользователя: ${err}`);
+        })
+        .finally(() => setIsAuthChecking(false));
+    } else {
+      setIsAuthChecking(false);
     }
   }, [history]);
 
   // загрузка информации о пользователе
   useEffect(() => {
     const token = localStorage.getItem('jwt');
+    const moviesList = localStorage.getItem('moviesList');
 
     if (loggedIn && token) {
       getUserData(token)
-        .then((res) => {
-          setCurrentUser(res);
-          if (localStorage.getItem('moviesList')) {
-            setListAllMovies(JSON.parse(localStorage.getItem('moviesList')));
-          }
+        .then((res) => setCurrentUser(res))
+        .catch(err => console.log(`Ошибка при загрузки информации о пользователе: ${err}`));
 
-          loadSavedMovies(token)
-            .then((res) => {
-              if (!res) {
-                setListSavedMovies([])
-                setListSavedSearchMovies([])
-              } else {
-                setListSavedMovies(res)
-                setListSavedSearchMovies(res)
-              }
-            })
-            .catch(err => console.log(err))
+      if (moviesList) {
+        setListAllMoviesRender(JSON.parse(moviesList));
+      }
+
+      loadSavedMovies(token)
+        .then((res) => {
+          if (!res) {
+            setListSavedMovies([])
+            setListSavedMoviesRender([])
+          } else {
+            setListSavedMovies(res)
+            setListSavedMoviesRender(res)
+          }
         })
         .catch(err => console.log(`Ошибка при загрузки информации о пользователе: ${err}`));
     }
   }, [loggedIn]);
-
-  // функция изменения данных пользоваталя
-  function updateUser(userData) {
-    const token = localStorage.getItem('jwt');
-
-    changeUserData(userData, token)
-      .then((res) => {
-        setCurrentUser(res)
-        console.log('данные изменены')
-      })
-      .catch(err => console.log(err))
-  }
-
-  // функция возврат назад
-  function handleGoBack() {
-    return history.goBack();
-  }
 
 
   return (
@@ -303,7 +284,7 @@ function App() {
         <Switch>
 
           <Route path="/signup">
-            <Register registerUser={registerUser} apiError={serverError} />
+            <Register registerUser={registerUser} apiError={serverError} loggedIn={loggedIn} />
           </Route>
 
           <Route path="/signin">
@@ -314,56 +295,44 @@ function App() {
             <Main />
           </Route>
 
-          <ProtectedRoute path="/profile" exact loggedIn={loggedIn} >
+          <ProtectedRoute path="/profile" exact loggedIn={loggedIn} isChecking={isAuthChecking}>
             <Profile logout={logout} updateUser={updateUser} apiError={serverError} />
           </ProtectedRoute >
 
-          <ProtectedRoute path="/movies" exact loggedIn={loggedIn} >
+          <ProtectedRoute path="/movies" exact loggedIn={loggedIn} isChecking={isAuthChecking}>
             <Movies
-              //loadContent={loadContent} // функция загрузки контента 
-              //valueSearch={valueSearch}
-              //counterSearch={counterSearch}
               // передать в SearchForm
               searchMovies={searchAllMovies} // функция поиска по всем фильмам
-              isVisiblePreloader={isVisiblePreloader} // показать прелоадер
-              isVisibleTooltip={isVisibleTooltip} // показать тултип
-              messageTooltip={messageTooltip} // сообщение тултипа
+              isVisiblePreloader={isVisiblePreloader} // показывать ли прелоадер
+              isVisibleTooltip={isVisibleTooltip} // показывать ли тултип
+              messageTooltip={messageTooltip} // изменить сообщение в тултипе
               isCheckedShortFilm={isCheckedShortFilm} // состояние чекбокса ShortFilm
-              setIsCheckedShortFilm={setIsCheckedShortFilm} // изменение состояния чекбокса ShortFilm
-
+              setIsCheckedShortFilm={setIsCheckedShortFilm} // изменение состояния чекбокса
               // передать в CardsList
-              showTooltip={showTooltip}
-              hideTooltip={hideTooltip}
-              listRenderMovies={isCheckedShortFilm ?
-                listAllMovies :
-                filterArrayByShortFilms(listAllMovies)} // список фильмов для рендеринга 
+              listRenderMovies={listAllMoviesRender} // список фильмов для рендеринга
               listSavedMovies={listSavedMovies} // список сохранёных фильмов
+              //showTooltip={showTooltip} // для отображения сообщений о поиске
+              hideTooltip={hideTooltip} // для скрытия сообщений о поиске
               clickSaveMovie={clickSaveMovie} // клик сохранить
               clickDeleteMovie={clickDeleteMovie} // клик удалить
             />
           </ProtectedRoute>
 
-          <ProtectedRoute path="/saved-movies" exact loggedIn={loggedIn} >
+          <ProtectedRoute path="/saved-movies" exact loggedIn={loggedIn} isChecking={isAuthChecking}>
             <SavedMovies
-
               // передать в SearchForm
-              //setValueSearch={setValueSearch}
-              //searchMovies={searchSavedMovies} // функция поиска по сохранённым фильмам
-              isVisiblePreloader={isVisiblePreloader} // показать прелоадер
-              isVisibleTooltip={isVisibleTooltip} // показать тултип
-              messageTooltip={messageTooltip} // сообщение тултипа
+              searchMovies={searchSavedMovies} // функция поиска по сохранённым фильмам
+              isVisiblePreloader={isVisiblePreloader} // показывать ли прелоадер
+              isVisibleTooltip={isVisibleTooltip} // показывать ли тултип
+              messageTooltip={messageTooltip} // изменить сообщение в тултипе
               isCheckedShortFilm={isCheckedShortFilm} // состояние чекбокса ShortFilm
-              setIsCheckedShortFilm={setIsCheckedShortFilm} // изменение состояния чекбокса ShortFilm
+              setIsCheckedShortFilm={setIsCheckedShortFilm} // изменение состояния чекбокса
 
               // передать в CardsList
-              showTooltip={showTooltip}
-              hideTooltip={hideTooltip}
-              resetListSavedSearchMovies={resetListSavedSearchMovies}
-
-              searchMovies={searchSavedMovies}
-              listRenderMovies={isCheckedShortFilm ? //список фильмов для рендеринга
-                listSavedSearchMovies :
-                filterArrayByShortFilms(listSavedSearchMovies)}
+              showTooltip={showTooltip} // для отображения сообщений о поиске
+              // hideTooltip={hideTooltip} // для скрытия сообщений о поиске
+              setListSavedMoviesRender={setListSavedMoviesRender}
+              listRenderMovies={listSavedMoviesRender} //список фильмов для рендеринга
               listSavedMovies={listSavedMovies} // список сохранёных фильмов
               clickDeleteMovie={clickDeleteMovie} // клик удалить
             />

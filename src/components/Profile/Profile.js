@@ -11,13 +11,13 @@ function Profile(props) {
   const [nameTitle, setNameTitle] = useState(currentUser.name); // для изменения имини в profile__title
   const [isValidForm, setIsValidForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessageStyle, setErrorMessageStyle] = useState(false);
 
   const inputNameRef = useRef(false); // инпут UserName
   const inputEmailRef = useRef(false); // инпут UserEmail
 
   const [userNameErrorText, setUserNameErrorText] = useState(''); // текст ошибки для UserName
   const [userEmailErrorText, setUserEmailErrorText] = useState(''); // текст ошибки для UserEmail
-
 
   useEffect(() => {
     setName(currentUser.name);
@@ -35,9 +35,10 @@ function Profile(props) {
     setEmail(e.target.value);
   }
 
-  function showError(мessage) {
+  function showMessage(мessage, isGoodMessage = false) {
     setErrorMessage(мessage);
     setTimeout(setErrorMessage, 5000, null);
+    isGoodMessage ? setErrorMessageStyle(true) : setErrorMessageStyle(false);
   }
 
   function handleSubmit(e) {
@@ -52,10 +53,10 @@ function Profile(props) {
     } else if (currentUser.name !== name && currentUser.email === email) {
       userData.name = name;
     } else {
-      showError('Данные остались прежними! Измените поля "Имя" или "E-mail", и снова нажмите кнопку "Редактировать".')
+      showMessage('Данные остались прежними! Измените поля "Имя" или "E-mail", и снова нажмите кнопку "Редактировать".')
       return
     }
-    props.updateUser(userData)
+    props.updateUser(userData, showMessage)
   }
 
   // активность кнопки сабмит
@@ -73,7 +74,9 @@ function Profile(props) {
       <h2 className="profile__title">Привет, {nameTitle}!</h2>
 
       <form className="form profile__form" onSubmit={handleSubmit}>
-        {errorMessage ? <p className="form__error-message">{errorMessage}</p> : null}
+        {errorMessage ?
+          <p className="form__error-message" style={errorMessageStyle ? { color: '#00c410' } : { color: '#FF3055' }}>{errorMessage}</p> :
+          null}
         <div className="form__inputs">
 
           <div className="form__input-element form__input-element_page_profile">

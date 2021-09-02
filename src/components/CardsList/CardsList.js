@@ -12,7 +12,7 @@ function CardsList(props) {
 
   // возвращает число карточек которые надо отрисовать при сабмите поиска 
   function initLimitCards() {
-    let pageWidth = document.documentElement.scrollWidth;
+    const pageWidth = document.documentElement.scrollWidth;
 
     if (pageWidth > 918) {
       return 12;
@@ -25,7 +25,7 @@ function CardsList(props) {
 
   // возвращает число карточек которые надо отрисовать при нажатии кнопки 'Еще'
   function initLoadMore() {
-    let pageWidth = document.documentElement.scrollWidth;
+    const pageWidth = document.documentElement.scrollWidth;
     if (pageWidth > 918) {
       return 3;
     } else {
@@ -55,9 +55,9 @@ function CardsList(props) {
 
       <Route exact path="(/movies)">
         <ul className="card-list__grid">
-          {props.listRenderMovies.slice(0, counterCards).map((movieData, index) => {
+          {props.listRenderMovies.slice(0, counterCards).map((movieData) => {
             return <Card
-              key={index}
+              key={movieData.id}
               card={movieData}
               clickSaveMovie={props.clickSaveMovie}
               clickDeleteMovie={props.clickDeleteMovie}
@@ -70,9 +70,9 @@ function CardsList(props) {
 
       <Route exact path="(/saved-movies)">
         <ul className="card-list__grid">
-          {props.listRenderMovies.slice(0, counterCards).map((movieData, index) => {
+          {props.listRenderMovies.slice(0, counterCards).map((movieData) => {
             return <Card
-              key={index}
+              key={movieData._id}
               card={{ ...movieData, id: movieData.movieId }}
               clickSaveMovie={props.clickSaveMovie}
               clickDeleteMovie={props.clickDeleteMovie}

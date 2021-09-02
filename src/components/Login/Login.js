@@ -39,48 +39,52 @@ function Login(props) {
   }, [userEmailErrorText, userPasswordErrorText])
 
 
-  return (
-    < section className = "login" >
-      { props.loggedIn ? <Redirect to='/' /> : null }
-      <Link className="login__logo" to="./" />
-      <h2 className="login__title">Рады видеть!</h2>
+  if (!props.loggedIn) {
+    return (
+      < section className="login" >
+        {props.loggedIn ? <Redirect to='/' /> : null}
+        <Link className="login__logo" to="./" />
+        <h2 className="login__title">Рады видеть!</h2>
 
-      <form className="form" onSubmit={handleSubmit} method="get">
+        <form className="form" onSubmit={handleSubmit} method="get">
 
-        <div className="form__inputs">
+          <div className="form__inputs">
 
-          <div className="form__input-element">
-            <label className="form__input-label" htmlFor="user-email-input">E-mail</label>
-            <input className="form__input" id="user-email-input" type="email"
-              name="userEmailInput" ref={inputEmailRef} onChange={handleEmailChange} required />
-            <span className="form__input-error" id="user-email-input-error">{userEmailErrorText}</span>
+            <div className="form__input-element">
+              <label className="form__input-label" htmlFor="user-email-input">E-mail</label>
+              <input className="form__input" id="user-email-input" type="email"
+                name="userEmailInput" ref={inputEmailRef} onChange={handleEmailChange} required />
+              <span className="form__input-error" id="user-email-input-error">{userEmailErrorText}</span>
+            </div>
+
+            <div className="form__input-element">
+              <label className="form__input-label" htmlFor="user-password-input">Пароль</label>
+              <input className="form__input" id="user-password-input" type="password"
+                name="userPasswordInput" ref={inputPasswordRef} onChange={handlePasswordChange}
+                minLength={2} required />
+              <span className="form__input-error" id="user-password-input-error">{userPasswordErrorText}</span>
+            </div>
+
           </div>
+          {/* <button className="form__button" type="submit">Войти</button> */}
 
-          <div className="form__input-element">
-            <label className="form__input-label" htmlFor="user-password-input">Пароль</label>
-            <input className="form__input" id="user-password-input" type="password"
-              name="userPasswordInput" ref={inputPasswordRef} onChange={handlePasswordChange}
-              minLength={2} required />
-            <span className="form__input-error" id="user-password-input-error">{userPasswordErrorText}</span>
-          </div>
+          <button className={`form__button ${isValidForm ? '' : 'form__button_type_inactive'}`}
+            type="submit" disabled={!isValidForm} >
+            Войти
+          </button>
 
-        </div>
-        {/* <button className="form__button" type="submit">Войти</button> */}
+          {props.apiError ? <p className="form__error-message">{props.apiError}</p> : null}
 
-        <button className={`form__button ${isValidForm ? '' : 'form__button_type_inactive'}`}
-          type="submit" disabled={!isValidForm} >
-          Войти
-        </button>
+          <p className="form__text">Ещё не зарегистрированы?
+            <Link className="form__link" to="./signup">Регистрация</Link>
+          </p>
 
-        {props.apiError ? <p className="form__error-message">{props.apiError}</p> : null}
-
-        <p className="form__text">Ещё не зарегистрированы?
-          <Link className="form__link" to="./signup">Регистрация</Link>
-        </p>
-
-      </form>
-    </section >
-  )
+        </form>
+      </section >
+    )
+  } else {
+    return <Redirect to="./movies" />
+  }
 }
 
 export default Login;
