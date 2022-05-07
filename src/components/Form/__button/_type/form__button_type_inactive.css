@@ -1,3 +1,4 @@
 .form__button_type_inactive {
   background-color: #A0A0A0;
+  cursor: not-allowed;
 }

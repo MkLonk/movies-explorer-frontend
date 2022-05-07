@@ -1,0 +1,14 @@
+.tooltip {
+  margin: 0;
+  padding: 0 20px 10px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: red;
+
+}
+
+.tooltip__text {
+  margin: 0;
+}
